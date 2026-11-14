@@ -17,7 +17,7 @@
 
 
 
-<title>Hello World | Wait a second</title>
+<title>测试一下上传 | Wait a second</title>
 
 
 
@@ -524,17 +524,13 @@
 
     <!-- toc -->
     
-  <!-- tocbot -->
-<nav class="post-toc toc text-sm w-40 relative top-32 right-4 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
-
-
 <section class="px-6 max-w-prose mx-auto md:px-0">
   <!-- Post header before content -->
   <header class="py-4">
     <div class="flex flex-col gap-2 pt-4 md:pt-6">
       <!-- Title -->
       <div id="article-title" class="leading-snug">
-        <p class="text-3xl font-bold text-[var(--c-100)] mb-4">Hello World</p>
+        <p class="text-3xl font-bold text-[var(--c-100)] mb-4">测试一下上传</p>
       </div>
       <!-- Meta data -->
       <div>
@@ -544,11 +540,11 @@
             <!-- Dates -->
             <div class="flex items-center gap-1">
               <iconify-icon width="18" icon="mingcute:add-circle-fill" ></iconify-icon>
-              Created: <time class="w-max">2026-11-02</time>
+              Created: <time class="w-max">2026-11-14</time>
             </div>
             <div class="flex items-center gap-1">
               <iconify-icon width="18" icon="mingcute:refresh-3-fill" ></iconify-icon>
-              Edited: <time class="w-max">2026-11-02</time>
+              Edited: <time class="w-max">2026-11-14</time>
             </div>
           </div>
           <div class="flex flex-wrap items-center gap-x-3 gap-y-3">
@@ -558,7 +554,7 @@
             <!-- Word count -->
             <span class="flex items-center gap-1">
               <iconify-icon width="18" icon="mingcute:book-2-fill" ></iconify-icon>
-              <span>75 words, 1 min</span>
+              <span>248 words, 1 min</span>
             </span>
             <!-- Categories -->
             
@@ -576,19 +572,13 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto dark:prose-invert">
-    <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <p>先看给什么：c、n、xorkey、e&#x3D;28，也就是没有对于e&#x3D;28的d。RSA不互素情况</p>
+<p>参考了Lazzaro佬，找RSA题型真好用.JPG<br><a target="_blank" rel="noopener" href="https://lazzzaro.github.io/2020/05/06/crypto-RSA/#gcd-e-%CF%86-n-%E2%89%A0-1">RSA - Lazzaro</a><br>把flag逐字节加密。注意分歧点在于c是否&gt;n,回绕到域内。</p>
+<p>1.未回绕（本题）因为密文大概5、60个数字，全部远小n。<br>2.回绕 需要额外处理。</p>
+<p>对于第一种情况，开数次方即可；第二种情况需要在一定的域范围内计算c mod p，总之这种情况需要试试分解n之类。其实我没学完。<br>（$c  \equiv m^e &#x3D; (m^g)^{e’} (mod n)$<br>这样就算有对于e’的d’了，g放出来。可以用d’处理得到$m^g$,然后再求解m。）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> Cryptodome.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> iroot</span><br><span class="line"></span><br><span class="line">c = [<span class="number">7131140366182514222469625631902508493327602479768018321</span>, <span class="number">273892744995340833777347939263771534786080723599733441</span>, <span class="number">9684097776150543705615389156358596133122569201009033216</span>, <span class="number">5233476330273605372135115210000000000000000000000000000</span>, <span class="number">4599865365447399609768010000000000000000000000000000</span>, <span class="number">95202614495880843927718277623035358895023910641729536</span>, <span class="number">193428131138340667952988160000000000000000000000000000</span>, <span class="number">9684097776150543705615389156358596133122569201009033216</span>, <span class="number">273892744995340833777347939263771534786080723599733441</span>, <span class="number">273892744995340833777347939263771534786080723599733441</span>, <span class="number">56797617595005953910252468036064500651398696336732717056</span>, <span class="number">95202614495880843927718277623035358895023910641729536</span>, <span class="number">66334629044966824718765264495212069363677393830384881</span>, <span class="number">9684097776150543705615389156358596133122569201009033216</span>, <span class="number">17683975347064825118245861490368238710833571230348476416</span>, <span class="number">2789425843265966267927011339423554153287456501159428096</span>, <span class="number">56797617595005953910252468036064500651398696336732717056</span>, <span class="number">23782688525533248414531548206282505430281162261962890625</span>, <span class="number">1648446623609512543951043690496</span>, <span class="number">5233476330273605372135115210000000000000000000000000000</span>, <span class="number">56797617595005953910252468036064500651398696336732717056</span>, <span class="number">193428131138340667952988160000000000000000000000000000</span>, <span class="number">15502932802662396215269535105521</span>, <span class="number">3827543948647425430322045212330289877339037312647605281</span>, <span class="number">10123015459215648170098586526069230424304037853659136</span>, <span class="number">273892744995340833777347939263771534786080723599733441</span>, <span class="number">10123015459215648170098586526069230424304037853659136</span>, <span class="number">95202614495880843927718277623035358895023910641729536</span>, <span class="number">374144419156711147060143317175368453031918731001856</span>]</span><br><span class="line"></span><br><span class="line">n = <span class="number">112295859782854720263058812673499346911429483462467359249017629975513194636639430463021305688858597275202583092480340893935191970570201404434381082727269981829686439554384632444735836512145338238778702273690049411692555297202560959056743471123919785435474653028619874763159722538155039699258301380419964533533</span></span><br><span class="line"></span><br><span class="line">XOR_KEY = <span class="number">61</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">m = <span class="built_in">bytes</span>(<span class="built_in">int</span>(iroot(ci,<span class="number">28</span>)[<span class="number">0</span>]) ^ XOR_KEY <span class="keyword">for</span> ci <span class="keyword">in</span> c)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(m)</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>即可。</p>
 
   </article>
 
@@ -599,20 +589,21 @@
   ">
     <div>
       
-        <a href="/2026/11/02/How-to-5tart/"
-          class="
-            transition-all
-            flex justify-center
-            hover:-translate-x-1
-            hover:text-[var(--c-80)]
-          ">
-          <iconify-icon width="20" icon="mingcute:left-fill" data-inline="false">
-          </iconify-icon>
-          How to 5tart?
-        </a>
-      
     </div>
     <div>
+      
+        <a href="/2026/11/02/How-to-5tart/"
+          class="
+            flex 
+            justify-center
+            hover:translate-x-1 
+            transition-transform
+            hover:text-[var(--c-100)]
+          "
+        >
+          How to 5tart?
+          <iconify-icon width="20" icon="mingcute:right-fill" data-inline="false"></iconify-icon>
+        </a>
       
     </div>
   </div>
