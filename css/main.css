@@ -465,6 +465,22 @@ figure.highlight .copy-icon:hover {
 .index-info-container img {
   box-shadow: 0 0 0 1px var(--c-30), 0 0 24px rgba(79,144,230,0.15);
 }
+body {
+  background-image: linear-gradient(rgba(255,255,255,0.84), rgba(255,255,255,0.84)), url("/images/bg.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+html.dark body {
+  background-image: linear-gradient(rgba(24,24,24,0.79), rgba(24,24,24,0.79)), url("/images/bg.jpg");
+}
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+    background-position: 35% center;
+  }
+}
 @-moz-keyframes enter {
   0% {
     opacity: 0;
