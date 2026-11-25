@@ -554,7 +554,7 @@
             <!-- Word count -->
             <span class="flex items-center gap-1">
               <iconify-icon width="18" icon="mingcute:book-2-fill" ></iconify-icon>
-              <span>220 words, 1 min</span>
+              <span>217 words, 1 min</span>
             </span>
             <!-- Categories -->
             
@@ -614,7 +614,7 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto dark:prose-invert">
-    <p><code>leave ret =mov  rsp rbp</code><br>            <code>pop rbp              </code>pop rip<code> 也就是先把</code>rsp<code>校准到</code>rbp<code>位置， </code>pop rbp<code>再将</code>rbp<code>校准到这个</code>[rsp]<code>的值（也就是</code>[rbp]<code>指向的的</code>saved rbp<code>），</code>rsp+8<code>。 最后把这时</code>[rsp]<code>的值推到</code>rip<code>下一步执行，</code>rsp &#x3D; 原rbp+16&#96;。</p>
+    <p><code>leave ret =mov  rsp rbp</code><br>            <code>pop rbp</code><br>            <code>pop rip</code><br>也就是先把<code>rsp</code>校准到<code>rbp</code>位置，<br><code>pop rbp</code>再将<code>rbp</code>校准到这个<code>[rsp]</code>的值（也就是<code>[rbp]</code>指向的的<code>saved rbp</code>），<code>rsp+8</code>。<br>最后把这时<code>[rsp]</code>的值推到<code>rip</code>下一步执行，<code>rsp = 原rbp+16</code>。</p>
 <p>那么对于两次leave ret，第一次通过修改(进入 <code>leave</code> 时的 <code>rbp</code> 内容，即<code>saved rbp)Pop rbp</code>，调整<code>rbp</code>的位置，第二次以第一次的<code>rbp</code>为基准，得到<code>rip</code> &#x3D; 第一次修改得到的<code>rbp+8</code>执行。</p>
 <p>对于函数的栈帧，也就是<code>leave ret</code> 某地址-从这里取<code>rbp</code>（此处即<code>saved rbp</code>，回到原来调用者的栈底），+8的位置取<code>rip</code>（即返回地址），+16定<code>rsp</code>（新栈顶,在函数末尾执行leave_ret的情况下，这里就相当于回到原来调用者的栈顶）</p>
 <p>#当你凝视stack的时候，stack也在凝视你</p>
