@@ -462,6 +462,9 @@ figure.highlight .copy-icon:hover {
   font-size: 1.6rem;
   color: var(--color-text-a);
 }
+.index-info-container img {
+  box-shadow: 0 0 0 1px var(--c-30), 0 0 24px rgba(79,144,230,0.15);
+}
 @-moz-keyframes enter {
   0% {
     opacity: 0;
